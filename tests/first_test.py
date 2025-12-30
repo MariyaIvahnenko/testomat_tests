@@ -1,7 +1,11 @@
 import os
 
 from dotenv import load_dotenv
+from faker import Faker
+fake = Faker()
 from playwright.sync_api import Page, expect
+
+from tests.conftest import Config
 
 load_dotenv()
 
@@ -9,13 +13,14 @@ LOGIN_URL = f"{os.getenv("BASE_APP_URL")}/users/sign_in"
 EMAIL = os.getenv("EMAIL")
 PASSWORD = os.getenv("PASSWORD")
 
-def test_login_with_invalid_creds(page: Page):
-    page.goto(os.getenv("BASE_URL"))
+def test_login_with_invalid_creds(page: Page, configs: Config):
+    page.goto(configs.base_url)
 
     expect(page.locator("[href*='sign_in'].login-item")).to_be_visible()
+    invalid_password = Faker().password(length=10)
 
     page.get_by_text("Log in", exact=True).click()
-    login_user(page, EMAIL, "12131415")
+    login_user(page, configs.email, invalid_password)
 
     expect(page.locator("#content-desktop").get_by_text("Invalid Email or password.")).to_be_visible()
     expect(page.locator('#content-desktop .common-flash-info')).to_have_text("Invalid Email or password.")
@@ -23,9 +28,9 @@ def test_login_with_invalid_creds(page: Page):
     expect(page).to_have_title("Testomat.io")
 
 
-def test_search_non_existing_project(page: Page):
-    page.goto(LOGIN_URL)
-    login_user(page, EMAIL, PASSWORD)
+def test_search_non_existing_project(page: Page, configs: Config):
+    page.goto(configs.login_url)
+    login_user(page, configs.email, configs.password)
 
     non_existing_project = "python manufacture"
     search_for_non_existing_project(page, non_existing_project)
@@ -33,9 +38,9 @@ def test_search_non_existing_project(page: Page):
     expect(page.get_by_role("heading", name=non_existing_project)).to_have_count(0)
 
 
-def test_search_project_in_company(page: Page):
-    page.goto(LOGIN_URL)
-    login_user(page, EMAIL, PASSWORD)
+def test_search_project_in_company(page: Page, configs: Config):
+    page.goto(configs.login_url)
+    login_user(page, configs.email, configs.password)
 
     target_project = "aerodynamic rubber watch"
     search_for_project(page, target_project)
@@ -45,9 +50,9 @@ def test_search_project_in_company(page: Page):
     expect(page.locator("ul li h3").filter(has_text="Industrial & Jewelry")).to_have_text("Industrial & Jewelry")
 
 
-def test_should_be_possible_to_open_free_project(page: Page):
-    page.goto(LOGIN_URL)
-    login_user(page, EMAIL, PASSWORD)
+def test_should_be_possible_to_open_free_project(page: Page, configs: Config):
+    page.goto(configs.login_url)
+    login_user(page, configs.email, configs.password)
 
     page.locator("#company_id").click()
     page.locator("#company_id").select_option("Free Projects")
@@ -59,9 +64,9 @@ def test_should_be_possible_to_open_free_project(page: Page):
     expect(page.get_by_text("You have not created any projects yet")).to_be_visible(timeout=100)
 
 
-def test_presence_button_create_company_to_upgrade(page: Page):
-    page.goto(LOGIN_URL)
-    login_user(page, EMAIL, PASSWORD)
+def test_presence_button_create_company_to_upgrade(page: Page, configs: Config):
+    page.goto(configs.login_url)
+    login_user(page, configs.email, configs.password)
 
     page.locator("#company_id").click()
     page.locator("#company_id").select_option("Free Projects")
@@ -69,9 +74,9 @@ def test_presence_button_create_company_to_upgrade(page: Page):
     expect(page.get_by_role("link", name="Create Company to Upgrade")).to_be_visible()
 
 
-def test_checking_the_documentation_page(page: Page):
-    page.goto(LOGIN_URL)
-    login_user(page, EMAIL, PASSWORD)
+def test_checking_the_documentation_page(page: Page, configs: Config):
+    page.goto(configs.login_url)
+    login_user(page, configs.email, configs.password)
 
     page.locator("#company_id").click()
     page.locator("#company_id").select_option("Free Projects")
