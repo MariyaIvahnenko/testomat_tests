@@ -37,10 +37,8 @@ class SideBar:
         expect(self._menu).to_be_visible()
         expect(self._logo).to_be_visible()
         expect(self._projects_link).to_be_visible()
-        # expect(self._tests_link).to_be_visible()
         return self
 
-    # Navigation methods - Fluent interface
     def go_to_tests(self) -> SideBar:
         self._tests_link.click()
         return self
@@ -94,7 +92,6 @@ class SideBar:
         return self
 
     def get_user_profile_link(self, user_name: str):
-        """Get user profile link by name"""
         return self.page.get_by_role('link', name=user_name)
 
     def click_user_profile(self, user_name: str) -> SideBar:
