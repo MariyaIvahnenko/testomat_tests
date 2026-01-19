@@ -37,3 +37,27 @@ def login(app: Application,
     app.login_page.open()
     app.login_page.is_loaded()
     app.login_page.login(configs.email, configs.password)
+
+
+@pytest.fixture(scope="session")
+def browser_type_launch_args(browser_type_launch_args: dict) -> dict:
+    return {
+        **browser_type_launch_args,
+        "channel": "chromium",
+        "headless": True,
+        "slow_mo": 100,
+        "timeout": 30000,
+    }
+
+
+@pytest.fixture(scope="session")
+def browser_context_ergs(browser_type_launch_args: dict) -> dict:
+    return {
+        **browser_type_launch_args,
+        "base_url": "https://app.testomat.io",
+        "viewport": {"width": 1920, "height": 1080},
+        "locale": "uk_UA",
+        "timezone_id": "Europe/Kyiv",
+        "record_video_dir": "videos/",
+        "permissions": ["geolocation"],
+    }

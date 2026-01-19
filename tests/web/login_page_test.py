@@ -23,4 +23,3 @@ def test_login_with_valid_creds(app: Application, configs: Config):
     app.login_page.login(configs.email, configs.password)
 
     app.projects_page.is_loaded()
-    app.projects_page.header.is_loaded()

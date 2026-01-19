@@ -42,9 +42,7 @@ class ProjectsPageHeader:
         self.table_view_button.click()
 
     def get_selected_company(self, expected_value: str):
-        selected_option = self.company_selector.locator('option[selected]')
-        expect(selected_option).to_have_text(expected_value)
-        return self
+        expect(self.company_selector.locator('option[selected]')).to_have_text(expected_value)
 
     def get_plan_name(self, expected_value: str):
-        expect(self.plan_badge.locator('span')).to_have_text(expected_value)
+        return expect(self.plan_badge.locator('span').last).to_have_text(expected_value)
