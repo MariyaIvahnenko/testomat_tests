@@ -8,7 +8,7 @@ from .pages.NewProjectsPage import NewProjectsPage
 
 
 class Application:
-    def __init__(self, page: Page):
+    def __init__(self, page: Page) -> None:
         self.page = page
         self.home_page = HomePage(page)
         self.login_page = LoginPage(page)
