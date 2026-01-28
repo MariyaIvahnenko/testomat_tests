@@ -1,7 +1,7 @@
 from faker import Faker
 from playwright.sync_api import Page
 
-from src.web.Application import Application
+from src.web.application import Application
 
 
 def test_new_project_creation(page: Page, login, app: Application):

@@ -6,7 +6,6 @@ from playwright.sync_api import Page, expect
 
 
 class SideBar:
-    """Component for the main navigation side panel"""
 
     def __init__(self, page: Page):
         self.page = page

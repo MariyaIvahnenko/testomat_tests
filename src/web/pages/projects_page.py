@@ -2,8 +2,8 @@ from ast import List
 
 from playwright.sync_api import expect, Page
 
-from src.web.components.ProjectCard import ProjectCard
-from src.web.components.ProjectsPageHeader import ProjectsPageHeader
+from src.web.components.project_card import ProjectCard
+from src.web.components.projects_page_header import ProjectsPageHeader
 
 
 class ProjectsPage:

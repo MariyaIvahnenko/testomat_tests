@@ -1,6 +1,6 @@
 import pytest
 
-from src.web.Application import Application
+from src.web.application import Application
 from tests.conftest import Config
 from tests.first_test import fake
 

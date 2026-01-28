@@ -1,3 +1,5 @@
+from typing import Self
+
 from playwright.sync_api import expect, Page
 
 
@@ -16,5 +18,6 @@ class LoginPage:
         self.page.locator("#content-desktop #user_password").fill(password)
         self.page.get_by_role("button", name="Sign in").click()
 
-    def invalid_login_message_visible(self):
+    def invalid_login_message_visible(self) -> Self:
         expect(self.page.locator("#content-desktop").get_by_text("Invalid Email or password.")).to_be_visible()
+        return self

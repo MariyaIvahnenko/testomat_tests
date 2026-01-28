@@ -1,3 +1,10 @@
-from src.web.components.ProjectsPageHeader import ProjectsPageHeader
-from .ProjectCard import ProjectCard, Badges
-from .SideBar import SideBar
+from .project_card import ProjectCard, Badges
+from .projects_page_header import ProjectsPageHeader
+from .side_bar import SideBar
+
+__all__ = [
+    "Badges",
+    "ProjectCard",
+    "ProjectsPageHeader",
+    "SideBar",
+]

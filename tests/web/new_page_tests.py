@@ -1,8 +1,8 @@
 from faker import Faker
 from playwright.sync_api import Page
 
-from src.web.pages.NewProjectsPage import NewProjectsPage
-from src.web.pages.ProjectPage import ProjectPage
+from src.web.pages.new_projects_page import NewProjectsPage
+from src.web.pages.project_page import ProjectPage
 
 
 def test_new_page_elements(page: Page, login):
