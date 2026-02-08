@@ -1,8 +1,8 @@
 import pytest
 
 from src.web.application import Application
-from tests.conftest import Config
 from tests.first_test import fake
+from tests.fixtures.config import Config
 
 invalid_login_test_data = [
     pytest.param("", "", id="empty_email_and_password"),

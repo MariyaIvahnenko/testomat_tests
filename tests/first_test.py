@@ -5,7 +5,7 @@ from faker import Faker
 fake = Faker()
 from playwright.sync_api import Page, expect
 
-from tests.conftest import Config
+from tests.fixtures.config import Config
 
 
 @pytest.fixture(scope="function")
