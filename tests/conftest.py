@@ -15,9 +15,9 @@ def clear_cookies_and_storage(page: Page):
     page.context.clear_cookies()
     page.evaluate("window.localStorage.clear(); window.sessionStorage.clear();")
 
-
 pytest_plugins = [
     "tests.fixtures.config",
     "tests.fixtures.playwright",
     "tests.fixtures.app",
+    "tests.fixtures.api",
 ]
