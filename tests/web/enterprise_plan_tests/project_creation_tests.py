@@ -3,7 +3,6 @@ from faker import Faker
 
 from src.api.client import TestomatClient
 from src.web.application import Application
-from tests.fixtures.api import api_client
 
 
 def test_new_project_creation_and_test_popup(logged_app: Application):
@@ -30,8 +29,8 @@ def test_new_project_creation_and_test_popup(logged_app: Application):
 @pytest.mark.web
 def test_open_project_and_create_test_suite_from_side_bar(logged_app: Application, api_client: TestomatClient):
     all_projects_response = api_client.get_projects()
-    all_projects = all_projects_response.get('data', [])
-    target_project_id = all_projects[0]['id']
+    all_projects = all_projects_response.get("data", [])
+    target_project_id = all_projects[0]["id"]
 
     logged_app.project_page.open_by_id(target_project_id).side_bar.is_loaded()
     logged_app.project_page.create_test_suite_via_popup()

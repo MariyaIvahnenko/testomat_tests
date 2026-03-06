@@ -2,7 +2,6 @@ from playwright.sync_api import BrowserContext, Cookie, Page
 
 
 class CookieHelper:
-
     def __init__(self, context: BrowserContext):
         self.context = context
 

@@ -1,5 +1,5 @@
 import os
-from typing import Dict, Any
+from typing import Any
 
 import requests
 from dotenv import load_dotenv
@@ -9,7 +9,7 @@ load_dotenv()
 
 class TestomatClient:
     def __init__(self):
-        self.base_url = os.getenv('BASE_APP_URL')
+        self.base_url = os.getenv("BASE_APP_URL")
         self.email = None
         self.password = None
         self.jwt_token = None
@@ -23,10 +23,7 @@ class TestomatClient:
         login_url = f"{self.base_url}/api/login"
 
         try:
-            payload = {
-                "email": self.email,
-                "password": self.password
-            }
+            payload = {"email": self.email, "password": self.password}
 
             response = requests.post(login_url, json=payload, timeout=10)
             response.raise_for_status()
@@ -46,23 +43,18 @@ class TestomatClient:
             return False
         except requests.exceptions.RequestException as e:
             print(f"Error: Authentication failed - {e}")
-            if hasattr(e, 'response') and e.response:
+            if hasattr(e, "response") and e.response:
                 print(f"Status: {e.response.status_code}")
                 print(f"Response: {e.response.text[:200]}")
             return False
 
-    def get_headers(self) -> Dict[str, str]:
-        if not self.jwt_token or not self._authenticated:
-            if not self.login():
-                raise Exception("Not authenticated and login failed")
+    def get_headers(self) -> dict[str, str]:
+        if (not self.jwt_token or not self._authenticated) and not self.login():
+            raise Exception("Not authenticated and login failed")
 
-        return {
-            "Authorization": self.jwt_token,
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        }
+        return {"Authorization": self.jwt_token, "Content-Type": "application/json", "Accept": "application/json"}
 
-    def get_projects(self) -> Dict[str, Any]:
+    def get_projects(self) -> dict[str, Any]:
         projects_url = f"{self.base_url}/api/projects"
 
         try:
@@ -72,12 +64,12 @@ class TestomatClient:
             return response.json()
 
         except requests.exceptions.Timeout:
-            raise Exception("Get projects request timed out")
+            raise Exception("Get projects request timed out") from None
         except requests.exceptions.RequestException as e:
             error_msg = f"Failed to get projects: {e}"
-            if hasattr(e, 'response') and e.response:
+            if hasattr(e, "response") and e.response:
                 error_msg += f"\nStatus: {e.response.status_code}"
-            raise Exception(error_msg)
+            raise Exception(error_msg) from e
 
     def clear_authentication(self):
         self.jwt_token = None

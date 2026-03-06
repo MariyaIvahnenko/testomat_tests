@@ -1,6 +1,7 @@
 import json
+from collections.abc import Generator
 from pathlib import Path
-from typing import Generator, Any
+from typing import Any
 
 import pytest
 from playwright.sync_api import Browser, BrowserContext, Page, expect
@@ -49,7 +50,7 @@ def build_browser_instance(
 
 
 @pytest.fixture(scope="function")
-def clean_app(browser_instance: Browser, configs: Config, build_browser_instance) -> Generator[Application, Any, None]:
+def clean_app(browser_instance: Browser, configs: Config, build_browser_instance) -> Generator[Application, Any]:
     context = build_browser_instance
     page = context.new_page()
     yield Application(page)
@@ -60,11 +61,7 @@ def clean_app(browser_instance: Browser, configs: Config, build_browser_instance
 @pytest.fixture(scope="session")
 def logged_context(browser_instance: Browser, configs: Config) -> Page:
     if STORAGE_STATE_PATH.exists():
-        context = build_browser_instance(
-            browser_instance,
-            configs.login_url,
-            storage_state=STORAGE_STATE_PATH
-        )
+        context = build_browser_instance(browser_instance, configs.login_url, storage_state=STORAGE_STATE_PATH)
         yield context.new_page()
         context.close()
         return

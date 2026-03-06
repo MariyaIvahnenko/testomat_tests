@@ -8,6 +8,7 @@ from src.web.components.project_card import Badges
 @pytest.fixture(scope="function")
 def app(page: Page) -> src.web.Application:
     from src.web.application import Application
+
     return Application(page)
 
 

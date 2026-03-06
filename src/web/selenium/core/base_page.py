@@ -3,7 +3,7 @@ from typing import Self
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 
-from src.web.selenium.core.waits import SelectorOrElement, BySelector, Wait
+from src.web.selenium.core.waits import BySelector, SelectorOrElement, Wait
 
 
 class BasePage:

@@ -13,8 +13,10 @@ class LoginPage(BasePage):
     SIGN_IN_BUTTON = (By.CSS_SELECTOR, "#content-desktop [value='Sign In']")
     SUCCESS_MESSAGE = (By.CSS_SELECTOR, "#content-desktop .common-flash-success")
     ERROR_MESSAGE = (By.CSS_SELECTOR, "#content-desktop .common-flash-info-right p")
-    INVALID_LOGIN_TEXT = (By.XPATH,
-                          "//div[@id='content-desktop']//div[contains(@class,'common-flash-info-right')]//p[normalize-space()='Invalid Email or password.']")
+    INVALID_LOGIN_TEXT = (
+        By.XPATH,
+        "//div[@id='content-desktop']//div[contains(@class,'common-flash-info-right')]//p[normalize-space()='Invalid Email or password.']",
+    )
 
     def __init__(self, driver: WebDriver):
         super().__init__(driver)

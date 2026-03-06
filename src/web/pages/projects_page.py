@@ -1,6 +1,6 @@
 from ast import List
 
-from playwright.sync_api import expect, Page
+from playwright.sync_api import Page, expect
 
 from src.web.components.project_card import ProjectCard
 from src.web.components.projects_page_header import ProjectsPageHeader
@@ -14,18 +14,18 @@ class ProjectsPage:
         self.info_message = page.locator(".common-flash-info-right p")
         self.success_message = page.locator(".common-flash-success-right p")
 
-        self.project_grid = page.locator('#grid')
+        self.project_grid = page.locator("#grid")
         self._project_cards = page.locator('#grid ul li.relative:has(a[href*="/projects/"])')
 
         # Notice about uninvited projects
-        self.uninvited_notice = page.locator('li span.text-gray-400')
+        self.uninvited_notice = page.locator("li span.text-gray-400")
 
         # Total counter
-        self.total_count = page.locator('.common-counter')
+        self.total_count = page.locator(".common-counter")
 
     def navigate(self, url: str = "/projects"):
         self.page.goto(url)
-        self.page.wait_for_load_state('networkidle')
+        self.page.wait_for_load_state("networkidle")
 
     def get_success_massage(self) -> str:
         return self.success_message.text_content().strip()
@@ -34,7 +34,7 @@ class ProjectsPage:
         return [ProjectCard(card) for card in self._project_cards.all()]
 
     def get_project_by_title(self, title: str) -> ProjectCard:
-        card = self._project_cards.filter(has=self.page.locator('h3', has_text=title)).first
+        card = self._project_cards.filter(has=self.page.locator("h3", has_text=title)).first
         return ProjectCard(card)
 
     def get_total_projects(self) -> int:

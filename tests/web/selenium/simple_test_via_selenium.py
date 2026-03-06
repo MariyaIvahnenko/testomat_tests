@@ -5,10 +5,10 @@ from selenium.webdriver.ie.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-fake = Faker()
-
 from src.web.selenium.pages import LoginPage, LoginPageV2
 from tests.fixtures.config import Config
+
+fake = Faker()
 
 
 def test_selenium_login_and_search(driver: WebDriver, configs: Config):

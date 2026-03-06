@@ -6,12 +6,12 @@ class TestForSuitePopup:
         self.page = page
         self.suite_checkboxes = page.locator(".tree-branch")
 
-    def wait_for_visible(self) -> TestForSuitePopup:
+    def wait_for_visible(self) -> "TestForSuitePopup":
         expect(self.page.get_by_role("heading", name="Select suite for test")).to_be_visible()
         expect(self.suite_checkboxes.first).to_be_visible()
         return self
 
-    def select_first_suite(self) -> TestForSuitePopup:
+    def select_first_suite(self) -> "TestForSuitePopup":
         self.suite_checkboxes.first.click()
         self.page.get_by_role("button", name="Select").click()
         return self

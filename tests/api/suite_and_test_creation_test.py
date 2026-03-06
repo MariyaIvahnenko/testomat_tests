@@ -68,19 +68,12 @@ def test_update_suite(
     original_name = fake.sentence()
     original_description = fake.paragraph()
 
-    suite = suite_controller.create(
-        project_id=project.id,
-        title=original_name,
-        description=original_description
-    )
+    suite = suite_controller.create(project_id=project.id, title=original_name, description=original_description)
     updated_name = fake.sentence()
     updated_description = fake.paragraph()
 
     updated_suite = suite_controller.update(
-        project_id=project.id,
-        suite_id=suite.id,
-        title=updated_name,
-        description=updated_description
+        project_id=project.id, suite_id=suite.id, title=updated_name, description=updated_description
     )
 
     assert updated_suite.id == suite.id
