@@ -5,6 +5,8 @@ from src.api.client import TestomatClient
 from src.web.application import Application
 
 
+@pytest.mark.regression
+@pytest.mark.web
 def test_new_project_creation_and_test_popup(logged_app: Application):
     target_project_name = Faker().company()
 
