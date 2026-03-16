@@ -38,6 +38,7 @@ minversion = "8.0"
 testpaths = ["tests"]
 python_files = ["test_*.py", "*_test.py", "*_tests.py"]
 python_functions = ["test_*"]
+python_classes = []
 norecursedirs = [".git", ".venv", ".claude", ".idea", "__pycache__", "build", "dist"]
 addopts = [
     "-v",
@@ -47,12 +48,15 @@ addopts = [
     "--html=test-result/report.html",
     "--self-contained-html",
     "--alluredir=./test-result/allure-results",
+    "--browser=chromium",
+    "-p no:asyncio",
 ]
 markers = [
     "smoke: Quick smoke tests for basic functionality",
     "regression: Full regression test suite",
     "web: Web UI tests using Playwright",
     "slow: Tests that take longer to execute",
+    "api: API tests",
 ]
 console_output_style = "progress"
 log_cli = true
