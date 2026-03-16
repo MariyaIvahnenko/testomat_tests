@@ -1,0 +1,4 @@
+- Locale: uk-UA
+- Timezone: Europe/Kyiv
+- Video recording: Enabled
+- Headless: False
