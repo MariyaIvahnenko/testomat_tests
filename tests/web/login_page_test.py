@@ -1,10 +1,10 @@
 import pytest
 from faker import Faker
 
-fake = Faker()
-
 from src.web.application import Application
 from tests.fixtures.config import Config
+
+fake = Faker()
 
 invalid_login_test_data = [
     pytest.param("", "", id="empty_email_and_password"),
