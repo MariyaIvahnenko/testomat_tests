@@ -1,3 +1,4 @@
+import pytest
 from faker import Faker
 from selenium.common import NoSuchElementException, StaleElementReferenceException
 from selenium.webdriver.common.by import By
@@ -11,6 +12,8 @@ from tests.fixtures.config import Config
 fake = Faker()
 
 
+@pytest.mark.regression
+@pytest.mark.selenium
 def test_selenium_login_and_search(driver: WebDriver, configs: Config):
     wait = WebDriverWait(driver, 10, 0.1, ignored_exceptions=[NoSuchElementException, StaleElementReferenceException])
 

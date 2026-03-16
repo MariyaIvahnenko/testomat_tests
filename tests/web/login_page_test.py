@@ -1,8 +1,10 @@
 import pytest
+from faker import Faker
 
 from src.web.application import Application
-from tests.first_test import fake
 from tests.fixtures.config import Config
+
+fake = Faker()
 
 invalid_login_test_data = [
     pytest.param("", "", id="empty_email_and_password"),
@@ -19,7 +21,7 @@ invalid_login_test_data = [
 ]
 
 
-@pytest.mark.smoke
+@pytest.mark.regression
 @pytest.mark.web
 @pytest.mark.parametrize("email,password", invalid_login_test_data)
 def test_login_invalid(app_for_invalid_login: Application, configs: Config, email: str, password: str):

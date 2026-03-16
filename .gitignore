@@ -9,8 +9,7 @@
 __pycache__
 .env*
 .venv
-test-result!/.gitignore
-!/videos/
-!/test-result/
+.gitignore
+videos
+test-result
 !/main.py
-!/.python-version

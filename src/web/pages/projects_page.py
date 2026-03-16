@@ -7,9 +7,10 @@ from src.web.components.projects_page_header import ProjectsPageHeader
 
 
 class ProjectsPage:
-    def __init__(self, page: Page):
+    def __init__(self, page: Page, base_url: str = "https://app.testomat.io"):
         self.page = page
         self.header = ProjectsPageHeader(page)
+        self.base_url = base_url
 
         self.info_message = page.locator(".common-flash-info-right p")
         self.success_message = page.locator(".common-flash-success-right p")
@@ -23,9 +24,11 @@ class ProjectsPage:
         # Total counter
         self.total_count = page.locator(".common-counter")
 
-    def navigate(self, url: str = "/projects"):
+    def navigate(self):
+        url = f"{self.base_url}/projects"
         self.page.goto(url)
         self.page.wait_for_load_state("networkidle")
+        return self
 
     def get_success_massage(self) -> str:
         return self.success_message.text_content().strip()
