@@ -4,7 +4,7 @@ from playwright.sync_api import expect
 from src.web.application import Application
 
 
-@pytest.mark.smoke
+@pytest.mark.regression
 @pytest.mark.web
 def test_projects_paje_header(free_project_app: Application):
     expect(free_project_app.page.get_by_text("You have not created any projects yet")).to_be_visible()
