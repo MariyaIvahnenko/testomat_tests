@@ -4,7 +4,7 @@ from src.web.application import Application
 from tests.fixtures.cookie_helper import CookieHelper
 
 
-@pytest.mark.smoke
+@pytest.mark.regression
 @pytest.mark.web
 def test_add_feature_flag_cookie(logged_app: Application, cookies: CookieHelper):
     cookies.add("feature_flag", "dark_mode_enabled", "app.testomat.io")
