@@ -1,4 +1,3 @@
-import asyncio
 from pathlib import Path
 
 import pytest
@@ -6,6 +5,9 @@ from dotenv import load_dotenv
 from playwright.sync_api import Page
 
 from src.web.application import Application
+
+PROJECT_ROOT = Path(__file__).parent.parent
+TEST_RESULT_DIR = PROJECT_ROOT / "test-result"
 
 load_dotenv(verbose=True)
 
@@ -48,21 +50,8 @@ pytest_plugins = [
 ]
 
 
-@pytest.fixture(scope="session", autouse=True)
-def disable_asyncio_for_sync_tests():
-    """Автоматично вимикає asyncio для синхронних тестів"""
-    try:
-        loop = asyncio.get_running_loop()
-        if loop.is_running():
-            print("⚠️  Виявлено asyncio loop, створюємо новий потік")
-            # Створюємо новий event loop в окремому потоці
-            import threading
-            def run_tests():
-                pytest.main(["-m", "smoke"])
-
-            thread = threading.Thread(target=run_tests)
-            thread.start()
-            thread.join()
-            pytest.exit("Тести запущено в окремому потоці")
-    except RuntimeError:
-        pass  # Немає asyncio loop - все добре
+@pytest.fixture(scope="function", autouse=True)
+def wait_between_tests():
+    import time
+    time.sleep(1)
+    yield

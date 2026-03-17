@@ -7,6 +7,7 @@ from src.api.models import Project
 fake = Faker()
 
 
+@pytest.mark.smoke
 @pytest.mark.api
 def test_create_suite(
         project: Project,
@@ -23,6 +24,7 @@ def test_create_suite(
     assert actual_test_suite.attributes.title == suite_name
 
 
+@pytest.mark.regression
 @pytest.mark.api
 def test_create_suite_and_case(
         project: Project,
@@ -57,6 +59,7 @@ def test_create_suite_and_case(
     suite_controller.delete(project.id, suite.id)
 
 
+@pytest.mark.regression
 @pytest.mark.api
 def test_update_suite(
         project: Project,
