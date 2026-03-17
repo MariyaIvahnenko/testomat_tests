@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import Page, expect
 
 
@@ -24,26 +25,34 @@ class ProjectsPageHeader:
         self.grid_view_button = page.locator("#grid-view")
         self.table_view_button = page.locator("#table-view")
 
+    @allure.step
     def select_company(self, company_name: str):
         self.company_selector.select_option(label=company_name)
 
+    @allure.step
     def search_projects(self, query: str):
         self.search_input.fill(query)
 
+    @allure.step
     def click_create(self):
         self.create_button.click()
 
+    @allure.step
     def click_manage(self):
         self.manage_button.click()
 
+    @allure.step
     def switch_to_grid_view(self):
         self.grid_view_button.click()
 
+    @allure.step
     def switch_to_table_view(self):
         self.table_view_button.click()
 
+    @allure.step
     def get_selected_company(self, expected_value: str):
         expect(self.company_selector.locator("option[selected]")).to_have_text(expected_value)
 
+    @allure.step
     def get_plan_name(self, expected_value: str):
         return expect(self.plan_badge.locator("span").last).to_have_text(expected_value)

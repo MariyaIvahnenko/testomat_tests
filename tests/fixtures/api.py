@@ -32,11 +32,7 @@ def api_credentials():
             "Please ensure BASE_APP_URL, EMAIL, and PASSWORD are set in .env file"
         )
 
-    return {
-        "email": email,
-        "password": password,
-        "base_url": base_url
-    }
+    return {"email": email, "password": password, "base_url": base_url}
 
 
 @pytest.fixture(scope="session")

@@ -1,5 +1,6 @@
 from enum import Enum
 
+import allure
 from playwright.sync_api import Locator, expect
 
 
@@ -30,11 +31,17 @@ class ProjectCard:
     def get_url(self) -> str:
         return self._link.get_attribute("href")
 
+    @allure.step
     def badges_has(self, expected_badge: Badges):
         expect(self._badges).to_contain_text(expected_badge.value)
         print(f"Looking for badge: {expected_badge.value}")
         print(f"Badge locator: {self._badges}")
 
+    @allure.step
     def click(self):
         self._link.click()
         return self
+
+    @allure.step
+    def is_demo_project(self) -> bool:
+        return Badges.Demo.value in self._badges.text_content()

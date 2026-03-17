@@ -4,25 +4,20 @@ version = "0.1.0"
 description = "Playwright-based E2E testing framework for Testomat application"
 requires-python = ">=3.14"
 dependencies = [
-    "pytest>=9.0.2",
-    "pytest-playwright>=0.7.2",
-    "pytest-html>=4.1.1",
-    "pytest-base-url>=2.1.0",
-    "pytest-metadata>=3.1.1",
+    "faker==37.12.0",
     "playwright>=1.55.0",
-    "selenium>=4.40.0",
-    "faker>=37.12.0",
-    "requests>=2.32.0",
-    "httpx>=0.28.0",
+    "pytest>=8.4.2",
+    "pytest-html==4.1.1",
+    "python-dotenv==1.2.1",
+    "ruff>=0.15.0",
+    "requests==2.32.5",
     "pydantic>=2.12.5",
-    "python-dotenv>=1.2.1",
     "allure-pytest>=2.15.3",
 ]
 
 [dependency-groups]
 dev = [
     "datamodel-code-generator>=0.54.1",
-    "pre-commit>=4.5.1",
     "ruff>=0.15.4",
 ]
 
@@ -49,7 +44,6 @@ addopts = [
     "--self-contained-html",
     "--alluredir=./test-result/allure-results",
     "--browser=chromium",
-    "-p no:asyncio",
 ]
 markers = [
     "smoke: Quick smoke tests for basic functionality",

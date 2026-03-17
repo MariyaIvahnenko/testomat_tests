@@ -1,12 +1,15 @@
 import json
+import os
 from collections.abc import Generator
 from pathlib import Path
 from typing import Any
 
+import allure
 import pytest
 from playwright.sync_api import Browser, BrowserContext, Page, expect
 
 from src.web.application import Application
+from tests.conftest import TEST_RESULT_DIR
 from tests.fixtures.config import Config
 from tests.fixtures.cookie_helper import (
     CookieHelper,
@@ -15,6 +18,70 @@ from tests.fixtures.cookie_helper import (
 
 STORAGE_STATE_PATH = Path("test-result/.auth/storage_state.json")
 FREE_PROJECT_STORAGE_PATH = Path("test-result/.auth/free_project_state.json")
+TRACES_DIR = TEST_RESULT_DIR / "traces"
+
+
+def get_or_create_context(
+        browser: Browser,
+        base_url: str,
+        storage_path: Path,
+) -> tuple[BrowserContext, bool]:
+    """
+    Returns context and flag indicating if login is needed.
+
+    If storage exists → load it, no login needed
+    If not → create fresh context, login needed
+    """
+    has_state = storage_path.exists()
+
+    kwargs = {
+        "base_url": base_url,
+        "viewport": {"width": 1920, "height": 1080},
+        "locale": "uk-UA",
+        "timezone_id": "Europe/Kyiv",
+        "permissions": ["geolocation"],
+    }
+    if os.getenv("CI", "false").lower() != "true":
+        kwargs["record_video_dir"] = str(TEST_RESULT_DIR / "videos")
+    if has_state:
+        kwargs["storage_state"] = str(storage_path)
+
+    context = browser.new_context(**kwargs)
+    return context, not has_state  # needs_login = True if no state
+
+
+def save_storage_state(context: BrowserContext, path: Path) -> None:
+    """Save browser state for reuse."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    context.storage_state(path=path)
+
+
+def start_tracing(page: Page) -> None:
+    page.context.tracing.start(screenshots=True, snapshots=True, sources=True)
+
+
+def stop_tracing_on_failure(page: Page, request: pytest.FixtureRequest) -> None:
+    """Stop tracing and save only if test failed. Attaches screenshot and trace to Allure."""
+    failed = hasattr(request.node, "rep_call") and request.node.rep_call.failed
+    if failed:
+        allure.attach(
+            page.screenshot(),
+            name="screenshot",
+            attachment_type=allure.attachment_type.PNG,
+        )
+
+        trace_path = TRACES_DIR / f"{request.node.name}.zip"
+        trace_path.parent.mkdir(parents=True, exist_ok=True)
+        page.context.tracing.stop(path=trace_path)
+
+        allure.attach.file(
+            str(trace_path),
+            name="trace",
+            extension="zip",
+            attachment_type="application/vnd.allure.playwright-trace",
+        )
+    else:
+        page.context.tracing.stop()
 
 
 def create_free_project_state() -> None:
@@ -129,15 +196,17 @@ def free_project_page(logged_context: BrowserContext, browser_instance: Browser,
     app.projects_page.header.select_company("Free Projects")
     expect(app.projects_page.header.free_plan_label).to_be_visible()
 
-    FREE_PROJECT_STORAGE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    context.storage_state(path=FREE_PROJECT_STORAGE_PATH)
+    save_storage_state(context, FREE_PROJECT_STORAGE_PATH)
 
     yield page
     context.close()
 
 
 @pytest.fixture(scope="function")
-def free_project_app(free_project_page: Page) -> Application:
+def free_project_app(free_project_page: Page, request: pytest.FixtureRequest) -> Application:
+    start_tracing(free_project_page)
     free_project_page.goto("/projects")
+
     yield Application(free_project_page)
-    free_project_page.close()
+
+    stop_tracing_on_failure(free_project_page, request)
