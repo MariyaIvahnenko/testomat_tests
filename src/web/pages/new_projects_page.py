@@ -1,5 +1,6 @@
 from typing import Self
 
+import allure
 from playwright.sync_api import Page, expect
 
 from src.web.pages.project_page import ProjectPage
@@ -14,6 +15,7 @@ class NewProjectsPage:
         self.page.goto("/projects/new")
         return self
 
+    @allure.step
     def is_loaded(self) -> Self:
         expect(self.__form_container).to_be_visible()
         expect(self.__form_container.locator("#classical")).to_be_visible()
@@ -27,10 +29,12 @@ class NewProjectsPage:
         expect(self.page.get_by_text("New Project")).to_be_visible()
         return self
 
+    @allure.step
     def fill_project_title(self, target_project_name: str) -> Self:
         self.__form_container.locator("#project_title").fill(target_project_name)
         return self
 
+    @allure.step
     def click_create(self) -> Self:
         self.__form_container.locator("#project-create-btn input").click()
         expect(self.__form_container.locator("#project-create-btn input")).to_be_hidden(timeout=10_000)

@@ -6,6 +6,8 @@ permissions:
   id-token: write
 
 on:
+  push:
+    branches: [ 'MNFCT-*' ]
   pull_request:
     branches: [ main ]
   schedule:
@@ -25,13 +27,15 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup environment
         uses: ./.github/actions/setup
+        with:
+          install-playwright: 'true'
 
       - name: Run Ruff linter
         run: uv run ruff check .
@@ -44,6 +48,7 @@ jobs:
     if: >
       github.event_name == 'pull_request' ||
       github.event_name == 'schedule' ||
+      github.event_name == 'push' ||
       (github.event_name == 'workflow_dispatch' &&
        (inputs.test_suite == 'smoke' || inputs.test_suite == 'all'))
     steps:
