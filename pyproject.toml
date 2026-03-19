@@ -45,7 +45,6 @@ addopts = [
     "--html=test-result/report.html",
     "--self-contained-html",
     "--alluredir=./test-result/allure-results",
-    "--browser=chromium",
 ]
 markers = [
     "smoke: Quick smoke tests for basic functionality",
