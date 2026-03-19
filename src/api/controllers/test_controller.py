@@ -4,11 +4,11 @@ from src.api.models import Test
 
 class TestController(BaseController):
     def create(
-            self,
-            project_id: str,
-            suite_id: str,
-            title: str,
-            description: str | None = None,
+        self,
+        project_id: str,
+        suite_id: str,
+        title: str,
+        description: str | None = None,
     ) -> Test:
         attributes: dict = {"title": title, "suite_id": suite_id}
         if description:
@@ -25,11 +25,11 @@ class TestController(BaseController):
         return Test.model_validate(data["data"])
 
     def update(
-            self,
-            project_id: str,
-            test_id: str,
-            title: str | None = None,
-            description: str | None = None,
+        self,
+        project_id: str,
+        test_id: str,
+        title: str | None = None,
+        description: str | None = None,
     ) -> Test:
         attributes = {}
         if title:

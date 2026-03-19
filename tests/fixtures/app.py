@@ -22,9 +22,9 @@ TRACES_DIR = TEST_RESULT_DIR / "traces"
 
 
 def get_or_create_context(
-        browser: Browser,
-        base_url: str,
-        storage_path: Path,
+    browser: Browser,
+    base_url: str,
+    storage_path: Path,
 ) -> tuple[BrowserContext, bool]:
     """
     Returns context and flag indicating if login is needed.
@@ -99,9 +99,9 @@ def create_free_project_state() -> None:
 
 
 def build_browser_instance(
-        browser: Browser,
-        base_url: str,
-        storage_state: Path | None = None,
+    browser: Browser,
+    base_url: str,
+    storage_state: Path | None = None,
 ) -> BrowserContext:
     kwargs = {
         "base_url": base_url,
@@ -134,7 +134,7 @@ def logged_context(browser_instance: Browser, configs: Config) -> Page:
         return
 
     context = build_browser_instance(browser_instance, configs.login_url, storage_state=STORAGE_STATE_PATH)
-    yield context.new_page()
+    context.new_page()
     page = context.new_page()
     app = Application(page)
     app.login_page.open()
