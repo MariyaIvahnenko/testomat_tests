@@ -10,9 +10,9 @@ fake = Faker()
 @pytest.mark.smoke
 @pytest.mark.api
 def test_create_suite(
-        project: Project,
-        suite_controller: SuiteController,
-        test_controller: TestController,
+    project: Project,
+    suite_controller: SuiteController,
+    test_controller: TestController,
 ):
     suite_name = fake.sentence()
     suite_response = suite_controller.create(project_id=project.id, title=suite_name, description=fake.paragraph())
@@ -27,9 +27,9 @@ def test_create_suite(
 @pytest.mark.regression
 @pytest.mark.api
 def test_create_suite_and_case(
-        project: Project,
-        suite_controller: SuiteController,
-        test_controller: TestController,
+    project: Project,
+    suite_controller: SuiteController,
+    test_controller: TestController,
 ):
     suite_name = fake.sentence()
     suite = suite_controller.create(project_id=project.id, title=suite_name, description="")
@@ -62,8 +62,8 @@ def test_create_suite_and_case(
 @pytest.mark.regression
 @pytest.mark.api
 def test_update_suite(
-        project: Project,
-        suite_controller: SuiteController,
+    project: Project,
+    suite_controller: SuiteController,
 ):
     original_name = fake.sentence()
     original_description = fake.paragraph()

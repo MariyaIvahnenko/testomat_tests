@@ -6,16 +6,16 @@ class CookieHelper:
         self.context = context
 
     def add(
-            self,
-            name: str,
-            value: str,
-            domain: str,
-            path: str = "/",
-            *,
-            http_only: bool = False,
-            secure: bool = False,
-            same_site: str = "Lax",
-            expires: float | None = None,
+        self,
+        name: str,
+        value: str,
+        domain: str,
+        path: str = "/",
+        *,
+        http_only: bool = False,
+        secure: bool = False,
+        same_site: str = "Lax",
+        expires: float | None = None,
     ) -> None:
         cookie: Cookie = {
             "name": name,
