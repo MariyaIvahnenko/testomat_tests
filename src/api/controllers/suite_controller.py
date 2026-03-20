@@ -1,14 +1,14 @@
 from src.api.controllers.base_controller import BaseController
-from src.api.models.SuitePy import SuitePy
 from src.api.models.suite import Suite
+from src.api.models.SuitePy import SuitePy
 
 
 class SuiteController(BaseController):
     def create(
-            self,
-            project_id: str,
-            title: str,
-            description: str | None = None,
+        self,
+        project_id: str,
+        title: str,
+        description: str | None = None,
     ) -> SuitePy:
         attributes = {"title": title, "description": description}
 
@@ -24,11 +24,11 @@ class SuiteController(BaseController):
         return Suite.model_validate(data["data"])
 
     def update(
-            self,
-            project_id: str,
-            suite_id: str,
-            title: str | None = None,
-            description: str | None = None,
+        self,
+        project_id: str,
+        suite_id: str,
+        title: str | None = None,
+        description: str | None = None,
     ) -> Suite:
         attributes = {}
         if title:

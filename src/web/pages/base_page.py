@@ -11,8 +11,7 @@ class BasePage(ABC):
 
     @abstractmethod
     @allure.step
-    def is_loaded(self) -> Self:
-        ...
+    def is_loaded(self) -> Self: ...
 
     @allure.step
     def wait_for_load(self, timeout: int = 30000) -> Self:
