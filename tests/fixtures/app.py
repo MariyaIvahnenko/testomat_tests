@@ -84,6 +84,68 @@ def stop_tracing_on_failure(page: Page, request: pytest.FixtureRequest) -> None:
         page.context.tracing.stop()
 
 
+def get_or_create_context(
+        browser: Browser,
+        base_url: str,
+        storage_path: Path,
+) -> tuple[BrowserContext, bool]:
+    """
+    Returns context and flag indicating if login is needed.
+
+    If storage exists → load it, no login needed
+    If not → create fresh context, login needed
+    """
+    has_state = storage_path.exists()
+
+    kwargs = {
+        "base_url": base_url,
+        "viewport": {"width": 1920, "height": 1080},
+        "locale": "uk-UA",
+        "timezone_id": "Europe/Kyiv",
+        "permissions": ["geolocation"],
+    }
+    if os.getenv("CI", "false").lower() != "true":
+        kwargs["record_video_dir"] = str(TEST_RESULT_DIR / "videos")
+    if has_state:
+        kwargs["storage_state"] = str(storage_path)
+
+    context = browser.new_context(**kwargs)
+    return context, not has_state  # needs_login = True if no state
+
+
+def save_storage_state(context: BrowserContext, path: Path) -> None:
+    """Save browser state for reuse."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    context.storage_state(path=path)
+
+
+def start_tracing(page: Page) -> None:
+    page.context.tracing.start(screenshots=True, snapshots=True, sources=True)
+
+
+def stop_tracing_on_failure(page: Page, request: pytest.FixtureRequest) -> None:
+    """Stop tracing and save only if test failed. Attaches screenshot and trace to Allure."""
+    failed = hasattr(request.node, "rep_call") and request.node.rep_call.failed
+    if failed:
+        allure.attach(
+            page.screenshot(),
+            name="screenshot",
+            attachment_type=allure.attachment_type.PNG,
+        )
+
+        trace_path = TRACES_DIR / f"{request.node.name}.zip"
+        trace_path.parent.mkdir(parents=True, exist_ok=True)
+        page.context.tracing.stop(path=trace_path)
+
+        allure.attach.file(
+            str(trace_path),
+            name="trace",
+            extension="zip",
+            attachment_type="application/vnd.allure.playwright-trace",
+        )
+    else:
+        page.context.tracing.stop()
+
 def create_free_project_state() -> None:
     if not STORAGE_STATE_PATH.exists():
         return
